@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+ИНСТИТУТ ДОПОЛНИТЕЛЬНОГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ И ОБУЧЕНИЯ
+{% endblock %}
+
+
+{% block slider %}
+
+<div class="slider">
+  {% for e in slider %}
+    <div class="slide">      
+        <div class="slide-content">
+          <a href="/slide/{{e.id}}"><h1>{{e.name}}</h1></a>            
+            <p>{{e.category}}</p><br>
+            <p>{{e.post}}</p><br>
+            <a class="button" href="/slide/{{e.id}}">Подробнее</a>
+        </div>
+      <img src="{{e.photo.url }}"  alt="">
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block bl_l %}
+<div class="bloks"> 
+  {% for e in grid %}       
+    <a href="/grid/{{e.id}}">
+      <img src="{{e.photo.url }}"  alt="">
+      <h3>{{e.name}}</h3>
+    </a>  
+  {% endfor %}        
+</div>
+
+<div class="course">
+  <h2>Ближайшие курсы</h2>
+
+  {% for el in courses %}
+    <a href="/course/{{el.id}}" class="course_post">
+      {% if el.image %}
+        <p> <img src="{{ el.image.url }}"></p>
+        {% endif %}
+      <div class="course_text">
+        <h2>{{ el.name }}</h2>
+        <h3>{{ el.post|safe }}</h3>
+        <div>
+            <h3 style="float: left">Просмотры: {{ el.c_views }}</h3>
+            <h3 style="float: right">Стоимость обучения: {{ el.price }} руб.</h3>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+</div>
+
+{% endblock %} 
+
+{% block bl_r %}
+
+<div class="pay">
+  {% for el in payment %}
+  <a class="pay{{ el.id}}" href="{{ el.url}}" target="_blank">        
+    <p>{{ el.name}}</p>
+  </a>
+  {% endfor %}
+</div>
+
+
+<div class="news">
+  <header>
+    <h2>Новости</h2>
+  </header>
+ {% for el in news %}
+<a href="/news/{{el.id}}" class="post">
+
+<h3>{{ el.date|date:"j E Y" }}</h3>
+<p>{{ el.name }}</p>
+
+</a>
+{% endfor %}
+</div>
+
+
+
+{% endblock %} 

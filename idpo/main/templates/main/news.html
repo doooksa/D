@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+ИДПО | {{get_artc.name}}
+
+{% endblock %}
+
+
+{% block bl_l %}
+
+<style>
+    .grid{ margin-top: 30px;}
+</style>
+
+
+    <h2>{{get_artc.name}}</h2>
+
+
+
+            <p>{{get_artc.post|safe}}</p>
+
+
+
+
+{% for el in entry %}
+<h1>{{ el.name }}</h1>
+<p>{{ el.post }}</p>
+    
+{% endfor %}
+
+{% endblock %}
+
+{% block bl_r %}
+
+<h1>Инормация о курсе</h1>
+
+{% endblock %}
