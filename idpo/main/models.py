@@ -2,11 +2,13 @@ from django.db import models
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField('Название', max_length=50)
     post = models.TextField('Описание', blank=True)
     sub_categories = models.ManyToManyField("self", blank=True)
     main = models.BooleanField('Главное меню')
     add = models.BooleanField('Доп. меню')
+    url = models.URLField('Ссылка', max_length=200, null=True, blank=True)
+    slug = models.SlugField('Slug', max_length=255, unique=True, db_index=True)
 
     @staticmethod
     def get_all_categories():
@@ -20,12 +22,13 @@ class Category(models.Model):
 
     class Meta:
         verbose_name = 'Карегория'
-        verbose_name_plural = 'Меню'
+        verbose_name_plural = '3. Меню'
 
 class Entry(models.Model):
     name = models.CharField(max_length=60)
     post = models.TextField('Описание', blank=True)
     category = models.ManyToManyField(Category)
+    slug = models.SlugField('Slug', max_length=255, unique=True, db_index=True)
 
     def __str__(self):
         return self.name
@@ -37,8 +40,10 @@ class Entry(models.Model):
 
 class Slider(models.Model):
     name = models.TextField('Заголовок',max_length=100)
+    shortpost = models.TextField('Короткое описание', null=True, blank=True,)
     post = models.TextField('Описание')
     photo = models.ImageField('Изображение',null=True, blank=True, upload_to='slider/')
+    slug = models.SlugField('Slug', max_length=255, unique=True, db_index=True)
 
 
     def __str__(self):
@@ -46,47 +51,55 @@ class Slider(models.Model):
 
     class Meta:
         verbose_name = 'Слайд'
-        verbose_name_plural = 'Слайдер'
+        verbose_name_plural = '4. Слайдер'
 
 class Grid(models.Model):
-    name = models.TextField(max_length=100)
+    name = models.TextField('Название', max_length=100)
     post = models.TextField('Описание')
     photo = models.ImageField('Изображение',null=True, blank=True, upload_to='slider/grid/')
+    publish = models.BooleanField('Опубликовать', default=True)
+    slug = models.SlugField('Slug', max_length=255, unique=True, db_index=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = 'Блок'
-        verbose_name_plural = 'Блоки под слайдером'
+        verbose_name_plural = '5. Блоки под слайдером'
 
 class Сourses(models.Model):
-    name = models.TextField('Название', max_length=200)
+    name = models.CharField('Название', max_length=70)
+    shortpost = models.TextField('Короткое описание')
     post = models.TextField('Описание')
-    price = models.IntegerField('Цена')
+    price = models.IntegerField('Цена', null=True, blank=True,)
     image = models.ImageField(null=True, blank=True, upload_to='courses/',
                                       verbose_name=u'Изображение', )
-    c_views = models.IntegerField(default=0)
+    publish = models.BooleanField('Опубликовать',default=True)
+    c_views = models.IntegerField('Просмотры', default=0)
+    slug = models.SlugField('Slug', max_length=255, unique=True, db_index=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = 'Курс'
-        verbose_name_plural = 'Курсы'
+        verbose_name_plural = '1. Курсы'
+        ordering = ['-id']
 
 
 class News(models.Model):
     date = models.DateTimeField('Дата')
     name = models.CharField('Название', max_length=70)
     post = models.TextField('Описание')
+    publish = models.BooleanField('Опубликовать',default=True)
+    slug = models.SlugField('Slug', max_length=255, unique=True, db_index=True)
 
 
     def __str__(self):
         return self.name
     class Meta:
         verbose_name = 'Новость'
-        verbose_name_plural = 'Новости'
+        verbose_name_plural = '2. Новости'
         ordering = ['-date']
 
 class Schedule(models.Model):
@@ -100,7 +113,7 @@ class Schedule(models.Model):
 
     class Meta:
         verbose_name = 'День недели'
-        verbose_name_plural = 'График работы'
+        verbose_name_plural = '6. График работы'
         ordering = ['id']
 
 class Payment(models.Model):
@@ -111,5 +124,5 @@ class Payment(models.Model):
         return self.name
     class Meta:
         verbose_name = 'Оплата'
-        verbose_name_plural = 'Оплата'
+        verbose_name_plural = '7. Оплата'
 

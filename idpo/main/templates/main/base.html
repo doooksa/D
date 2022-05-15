@@ -23,20 +23,31 @@
 
                     <ul class="header_list">
                         {% for c in category %}
-                            {% if  c.main == True %}
+                            {% if  c.main == True %}                            
                         <li>
-                             <a class="header_link" href="/category/{{c.id}}">{{c.name}} </a>
+                            <a class="header_link" 
+                                {% if  c.url == Null %}
+                                    href="/category/{{c.slug}}"
+                                {% else %}    
+                                    href="{{c.url}}"
+                                {% endif %}    
+                                    >{{c.name}}
+                            </a>                                                         
+                    
+                            {% for subcategory in c.sub_categories.all %}
 
-                             {% for subcategory in c.sub_categories.all %}
-
-                                    <ul class="header_sub_list">
-
+                                    <ul class="header_sub_list">                                      
                                         
-                                        
-
                                         {% for subcategory in c.sub_categories.all %}
                                         <li>
-                                            <a href="/category/{{ subcategory.id }}">{{ subcategory  }}</a>
+                                            <a 
+                                                {% if  subcategory.url == Null %}
+                                                    href="/category/{{ subcategory.slug }}"
+                                                {% else %}    
+                                                    href="{{subcategory.url}}"
+                                                {% endif %}
+                                                    >{{ subcategory  }}
+                                            </a>
                                         </li>
                                         {% endfor %}
                                        
@@ -54,29 +65,30 @@
                     {% for c in category %}
                     {% if  c.add == True %}
                     <li>
-                        <a href="/category/{{ c.id }}">{{c.name}}</a>
+                        <a href="/category/{{ c.slug }}">{{c.name}}</a>
                     </li>
                     
                     {% endif %}
                     {% endfor %}
-                    <li>
-                        <a href="">(8216) 738-770</a>
+                    <li class="add-menu">
+                        <a href="tel:8216738770">(8216) 738-770</a>
                     </li>
                 </ul>
+                <!--
                 <div class="lang">
                     <a href="" class="active">RU</a>
                     <a href="">EG</a>
                 </div>
-
+                -->
             </div>
 
 
 
             <div class="right-nav">
-                <div class="search-box">
-                    <input type="text" class="search-txt" placeholder="Поиск">
-                    <a href="#" class="search-btn"><img src="{%static 'img/search.png'%}"></a>
-                </div>
+                    <form class="search-box" action="{% url 'search' %}">
+                        <input type="text" class="search-txt" placeholder="Поиск" name="search" required>
+                        <button class="search-btn" type="submit"><img src="{%static 'img/search.png'%}"></button>
+                    </form>
             </div>
 
             <div class="header_burger">
@@ -98,7 +110,7 @@
 
             <div class="bl_r">
                 {% block bl_r %}{% endblock %}    
-                
+            
                 <a class="questions" href="">
                     <p>Заказать консультацию</p>
                   </a>
@@ -136,11 +148,19 @@
          </div>
     </div>
 
-    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Afbf9a4016ee5d0bf269448594f123a5b9350f5e852d529e68f357cfa63e2215f&amp;width=100%25&amp;height=250&amp;lang=ru_RU&amp;scroll=true"></script>
+    {% block map %}{% endblock %}
 </div>
 
-
-
+<footer>
+    <div class="footer-content">
+        <p>Республика Коми, г.Ухта, ул. Сенюкова, д. 17, Бизнес-инкубатор, 5 этаж</p>
+        <p>(8216) 738-770</p>
+        <p><a href="mailto:idpo@ugtu.net">idpo@ugtu.net</a></p>
+        <br>
+        <hr> 
+    </div>
+    
+</footer>
 
 
 

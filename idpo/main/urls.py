@@ -4,12 +4,14 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='home'),
-    path('category/<int:id>/', views.cats, name='category'),
-    path('entry/<int:id>/', views.entry, name='entry'),
-    path('slide/<int:id>/', views.slide, name='slide'),
-    path('grid/<int:id>/', views.grid, name='grid'),
-    path('course/<int:id>/', views.courses, name='courses'),
-    path('news/<int:id>/', views.news, name='news'),
+    path('category/<slug:slug>/', views.cats, name='category'),
+    path('slide/<slug:slug>/', views.slide, name='slide'),
+    path('grid/<slug:slug>/', views.grid, name='grid'),
+    path('course/<slug:slug>/', views.courses, name='courses'),
+    path('news/<slug:slug>/', views.news, name='news'),
+    path('courses/', views.all_courses, name='all_courses'),
+    path('all_news/', views.all_news, name='all_news'),
+    path('search/', views.search, name='search'),
 
 
 ]

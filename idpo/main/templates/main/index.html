@@ -12,10 +12,10 @@
   {% for e in slider %}
     <div class="slide">      
         <div class="slide-content">
-          <a href="/slide/{{e.id}}"><h1>{{e.name}}</h1></a>            
+          <a href="/slide/{{e.slug}}"><h1>{{e.name}}</h1></a>            
             <p>{{e.category}}</p><br>
-            <p>{{e.post}}</p><br>
-            <a class="button" href="/slide/{{e.id}}">Подробнее</a>
+            <p>{{e.shortpost}}</p><br>
+            <a class="button" href="/slide/{{e.slug}}">Подробнее</a>
         </div>
       <img src="{{e.photo.url }}"  alt="">
     </div>
@@ -26,11 +26,13 @@
 
 {% block bl_l %}
 <div class="bloks"> 
-  {% for e in grid %}       
+  {% for e in grid %}
+  {% if e.publish == True %}       
     <a href="/grid/{{e.id}}">
       <img src="{{e.photo.url }}"  alt="">
       <h3>{{e.name}}</h3>
-    </a>  
+    </a>
+  {% endif %}   
   {% endfor %}        
 </div>
 
@@ -38,29 +40,43 @@
   <h2>Ближайшие курсы</h2>
 
   {% for el in courses %}
-    <a href="/course/{{el.id}}" class="course_post">
-      {% if el.image %}
-        <p> <img src="{{ el.image.url }}"></p>
-        {% endif %}
+  {% if el.publish == True %}
+    <a href="/course/{{el.slug}}" class="course_post">
+
       <div class="course_text">
+        {% if el.image %}
+        <p> <img src="{{ el.image.url }}" align="left"></p>
+        {% endif %}
         <h2>{{ el.name }}</h2>
-        <h3>{{ el.post|safe }}</h3>
+        <h3>{{ el.shortpost|safe }}</h3>
         <div>
-            <h3 style="float: left">Просмотры: {{ el.c_views }}</h3>
-            <h3 style="float: right">Стоимость обучения: {{ el.price }} руб.</h3>
+            <h3 style="float: left; padding-top: 7px;">Просмотры: {{ el.c_views }}</h3>
+            {% if el.price == Null %}
+            {% else %}
+            <h3 class="course-price">Стоимость: {{ el.price }} руб.</h3>
+            {% endif %}
         </div>
       </div>
     </a>
+    {% endif %}
     {% endfor %}
+
+    {% if courses.count == 4 %}
+    <a class="all-course" href="/courses"> 
+      <h3>Все курсы</h3>
+    </a>
+    {% endif %}
 </div>
 
-{% endblock %} 
+
+{% endblock %}
+
 
 {% block bl_r %}
 
 <div class="pay">
   {% for el in payment %}
-  <a class="pay{{ el.id}}" href="{{ el.url}}" target="_blank">        
+  <a href="{{ el.url}}" target="_blank">        
     <p>{{ el.name}}</p>
   </a>
   {% endfor %}
@@ -69,18 +85,26 @@
 
 <div class="news">
   <header>
-    <h2>Новости</h2>
+    <a class="t_news"  href="/all_news"><h2>Новости</h2></a>
+    
   </header>
- {% for el in news %}
-<a href="/news/{{el.id}}" class="post">
 
-<h3>{{ el.date|date:"j E Y" }}</h3>
-<p>{{ el.name }}</p>
-
-</a>
+{% for el in news %}
+  {% if el.publish == True %}
+    <a href="/news/{{el.slug}}" class="post">
+      <h3>{{ el.date|date:"j E Y" }}</h3>
+      <p>{{ el.name }}</p>
+    </a>
+  {% endif %}
 {% endfor %}
+
 </div>
 
 
 
+
 {% endblock %} 
+{% block map %}
+<script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Afbf9a4016ee5d0bf269448594f123a5b9350f5e852d529e68f357cfa63e2215f&amp;width=100%25&amp;height=250&amp;lang=ru_RU&amp;scroll=true"></script>
+
+{% endblock %}

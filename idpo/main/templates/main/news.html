@@ -14,25 +14,62 @@
 </style>
 
 
-    <h2>{{get_artc.name}}</h2>
+<div class="course">
+    <h2>Новости</h2>
+  
+    {% for el in page_obj %}
+    {% if el.publish == True %}
+      <a href="/news/{{el.slug}}" class="course_post">
+        <div class="course_text">
+          <h2>{{ el.date|date:"j E Y" }}</h2>
+          <h3>{{ el.name }}</h3>
+        </div>
+      </a>
+      {% endif %}
+      {% endfor %}
 
 
-
-            <p>{{get_artc.post|safe}}</p>
-
-
-
-
-{% for el in entry %}
-<h1>{{ el.name }}</h1>
-<p>{{ el.post }}</p>
+    {% if page_obj.has_other_pages %}
+    <nav class="paginator">
+        <ul>
+    {% if page_obj.has_previous %}
+    <li>
+        <a href="?page={{ page_obj.next_previous_number }}">&lt;</a>
+    </li>
+    {%endif%}
     
-{% endfor %}
+
+            {% for p in page_obj.paginator.page_range %}
+            {% if page_obj.number == p %}
+            <li>{{p}}</li>
+
+            {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+            <li>
+                <a href="?page={{p}}">{{p}}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+    {% if page_obj.has_next %}
+    <li>
+        <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+    </li>
+    {%endif%}
+
+        </ul>
+    </nav>
+    {% endif %}
+      
+  </div>
+
+
+
+
+
 
 {% endblock %}
 
 {% block bl_r %}
 
-<h1>Инормация о курсе</h1>
 
 {% endblock %}
